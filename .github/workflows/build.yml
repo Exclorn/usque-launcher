@@ -1,19 +1,26 @@
 name: Build Usque Launcher
-on: [push, workflow_dispatch]
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: windows-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: crazy-max/ghaction-ahk-compiler@v3
+      # 1. Download your repository's code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Compile the AutoHotkey script into an .exe file (USING THE LATEST VERSION)
+      - name: Compile AHK Script
+        uses: crazy-max/ghaction-ahk-compiler@v4
         with:
           script: UsqueLauncher.ahk
           dest: UsqueLauncher.exe
-      - run: |
-          mkdir release
-          copy UsqueLauncher.exe release\
-        shell: cmd
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Usque-Launcher-Windows
-          path: release/
+          icon: "" # You can add an icon file here later if you want
+
+      # 3. Package the final application files into a zip
+      - name: Package Applica
