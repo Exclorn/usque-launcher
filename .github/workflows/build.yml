@@ -10,17 +10,23 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      # 1. Download your repository's code
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Compile the AutoHotkey script into an .exe file (USING THE LATEST VERSION)
       - name: Compile AHK Script
         uses: crazy-max/ghaction-ahk-compiler@v4
         with:
           script: UsqueLauncher.ahk
           dest: UsqueLauncher.exe
-          icon: "" # You can add an icon file here later if you want
 
-      # 3. Package the final application files into a zip
-      - name: Package Applica
+      - name: Package Application
+        run: |
+          mkdir release
+          copy UsqueLauncher.exe release\
+        shell: cmd
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Usque-Launcher-Windows
+          path: release/
