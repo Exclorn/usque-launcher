@@ -1,0 +1,19 @@
+name: Build Usque Launcher
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: crazy-max/ghaction-ahk-compiler@v3
+        with:
+          script: UsqueLauncher.ahk
+          dest: UsqueLauncher.exe
+      - run: |
+          mkdir release
+          copy UsqueLauncher.exe release\
+        shell: cmd
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Usque-Launcher-Windows
+          path: release/
